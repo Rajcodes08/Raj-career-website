@@ -1,4 +1,4 @@
-from flask import Flask, render_template # flask is module # Flask is a class
+from flask import Flask, render_template, jsonify # flask is module # Flask is a class
 
 app = Flask(__name__) # __name__ is a special variable in Python that holds the name of the current module # app is object of class Flask
 # __name__ is used to determine if the script is being run directly or imported as a module
@@ -38,6 +38,12 @@ def hello_world():
 @app.route('/friend/')
 def hello_world2():
     return 'Hello, friend!'
+
+@app.route('/api/jobs') # this is the API endpoint that will return the list of jobs in JSON format, that is a format that can be easily read by machines
+def list_jobs():
+    return jsonify(JOBS)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
