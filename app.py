@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify # flask is module # Flask is a class
-from database import load_jobs_from_db,load_jobs_from_db # this function will load the jobs from the database
+from flask import Flask, render_template, jsonify, request # flask is module # Flask is a class
+from database import load_jobs_from_db,load_job_from_db, add_application_to_db # this function will load the jobs from the database
 
 app = Flask(__name__) # __name__ is a special variable in Python that holds the name of the current module load_jobs_from_db # this function will load the jobs from the database   
 
@@ -22,12 +22,21 @@ def list_jobs():
 
 @app.route("/job/<id>") 
 def show_job(id):
-    job = load_jobs_from_db(id)
+    job = load_job_from_db(id)
     
     if not job:
         return "Job not found", 404
-    #return jsonify(job) # this function will return the job with the given id in JSON format
-    return render_template('jobpage.html', job=job, company_name=' Raj ') # this function will return the job with the given id in HTML format
+
+    return render_template('jobpage.html', job=job) 
+
+
+@app.route("/job/<id>/apply", methods =['post']) # this is the API endpoint that will handle the job application
+def apply_to_job(id):
+    data = dict(request.form) # this will get the data from the query string of the URL
+    
+    job= load_job_from_db(id)
+    add_application_to_db(id, data)
+    return render_template('application_submitted.html', application=data, job=job) # this function will return the application submitted page in HTML format
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
