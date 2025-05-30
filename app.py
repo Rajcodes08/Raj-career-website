@@ -3,16 +3,12 @@ from database import load_jobs_from_db,load_job_from_db, add_application_to_db #
 
 app = Flask(__name__) # __name__ is a special variable in Python that holds the name of the current module load_jobs_from_db # this function will load the jobs from the database   
 
-@app.route('/') # jovian.ai/learn here jovian.ai is the domain and /learn is the path or route
+@app.route('/') # example: (jovian.ai/learn)= here jovian.ai is the domain and /learn is the path or route
  # / is empty path or root path
 # @app.route('/hello') # this is a decorator that tells Flask what URL should call the function that follows
 def hello_world():
     jobs = load_jobs_from_db() # this function will load the jobs from the database
     return render_template('home.html', jobs=jobs) # this function returns a string that will be displayed in the browser when the URL is accessed
-
-@app.route('/friend/')
-def hello_world2():
-    return 'Hello, friend!'
 
 @app.route('/api/jobs') # this is the API endpoint that will return the list of jobs in JSON format, that is a format that can be easily read by machines
 def list_jobs():
